@@ -500,7 +500,7 @@ class register(S3CustomController):
             formvars = form.vars
 
             # Create the user record (will be initially disabled by registration key)
-            user_id = utable.insert(**utable._filter_fields(formvars, id=False))
+            user_id = utable.insert(**utable._filter_fields(formvars, allow_id=False))
             formvars.id = user_id
 
             # Save temporary user fields in s3db.auth_user_temp
@@ -531,7 +531,7 @@ class register(S3CustomController):
                 if "language" not in form.vars:
                     # Was missing from login form
                     form.vars.language = T.accepted_language
-                user = Storage(utable._filter_fields(form.vars, id=True))
+                user = Storage(utable._filter_fields(form.vars, allow_id=True))
                 auth.login_user(user)
 
                 # Send welcome email
@@ -914,7 +914,7 @@ class verify_email(S3CustomController):
             self.send_welcome_email(user)
 
             # Log them in
-            user = Storage(utable._filter_fields(user, id=True))
+            user = Storage(utable._filter_fields(user, allow_id=True))
             auth.login_user(user)
 
             auth_messages = auth.messages
@@ -1183,7 +1183,7 @@ class register_org(S3CustomController):
                 formvars["organisation_id"] = organisation_id
 
             # Create the user record
-            user_id = utable.insert(**utable._filter_fields(formvars, id=False))
+            user_id = utable.insert(**utable._filter_fields(formvars, allow_id=False))
             formvars.id = user_id
 
             # Save temporary user fields in s3db.auth_user_temp
