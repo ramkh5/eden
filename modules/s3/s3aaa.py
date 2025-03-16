@@ -513,7 +513,7 @@ Thank you"""
         password = utable[passfield].validate(password)[0]
         if user:
             if not user.registration_key and user[passfield] == password:
-                user = Storage(utable._filter_fields(user, id=True))
+                user = Storage(utable._filter_fields(user, allow_id=True))
                 current.session.auth = Storage(user = user,
                                                last_visit = current.request.now,
                                                expiration = settings.expiration,
@@ -818,7 +818,7 @@ Thank you"""
 
         # Process authenticated users
         if user:
-            user = Storage(utable._filter_fields(user, id=True))
+            user = Storage(utable._filter_fields(user, allow_id=True))
             self.login_user(user)
         if log and self.user:
             self.log_event(log, self.user)
@@ -1047,7 +1047,7 @@ Thank you"""
                    })
             session.flash = messages.password_changed
             if settings.login_after_password_change:
-                user = Storage(table_user._filter_fields(user, id=True))
+                user = Storage(table_user._filter_fields(user, allow_id=True))
                 self.login_user(user)
             callback(onaccept, form)
             redirect(next, client_side=settings.client_side)
@@ -1584,7 +1584,7 @@ $('form.auth_consent').submit(S3ClearNavigateAwayConfirm);''')
                 if "language" not in form.vars:
                     # Was missing from login form
                     form.vars.language = T.accepted_language
-                user = Storage(utable._filter_fields(form.vars, id=True))
+                user = Storage(utable._filter_fields(form.vars, allow_id=True))
                 self.login_user(user)
 
                 self.s3_send_welcome_email(form.vars)
@@ -1618,7 +1618,7 @@ $('form.auth_consent').submit(S3ClearNavigateAwayConfirm);''')
                     if "language" not in form.vars:
                         # Was missing from login form
                         form.vars.language = T.accepted_language
-                    user = Storage(utable._filter_fields(form.vars, id=True))
+                    user = Storage(utable._filter_fields(form.vars, allow_id=True))
                     self.login_user(user)
 
             # Set a Cookie to present user with login box by default
@@ -1748,7 +1748,7 @@ $('form.auth_consent').submit(S3ClearNavigateAwayConfirm);''')
 
         if approved:
             # Log them in
-            user = Storage(utable._filter_fields(user, id=True))
+            user = Storage(utable._filter_fields(user, allow_id=True))
             self.login_user(user)
 
         if log:
@@ -3809,7 +3809,7 @@ Please go to %(url)s to approve this user."""
                 # Invalid user ID
                 raise ValueError("User not found")
             else:
-                user = Storage(utable._filter_fields(user, id=True))
+                user = Storage(utable._filter_fields(user, allow_id=True))
 
         self.user = user
         session = current.session
