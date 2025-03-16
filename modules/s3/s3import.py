@@ -2397,7 +2397,7 @@ class S3ImportItem:
                 job.onconflict(self)
 
         if self.data is not None:
-            data = table._filter_fields(self.data, id=True)
+            data = table._filter_fields(self.data, allow_id=True)
         else:
             data = Storage()
 
