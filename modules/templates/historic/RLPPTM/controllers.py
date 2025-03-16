@@ -1087,7 +1087,7 @@ class register(S3CustomController):
                 formvars["organisation_id"] = organisation_id
 
             # Create the user record
-            user_id = utable.insert(**utable._filter_fields(formvars, id=False))
+            user_id = utable.insert(**utable._filter_fields(formvars, allow_id=False))
             formvars.id = user_id
 
             # Set org_group
@@ -1141,7 +1141,7 @@ class register(S3CustomController):
                 if "language" not in form.vars:
                     # Was missing from login form
                     form.vars.language = T.accepted_language
-                user = Storage(utable._filter_fields(form.vars, id=True))
+                user = Storage(utable._filter_fields(form.vars, allow_id=True))
                 auth.login_user(user)
 
                 # Send welcome email
@@ -1969,7 +1969,7 @@ class register_invited(S3CustomController):
 
             # Get the account
             account = self.account(key, form_vars.code)
-            account.update_record(**utable._filter_fields(form_vars, id=False))
+            account.update_record(**utable._filter_fields(form_vars, allow_id=False))
 
             del session.s3["invite_key"]
 
@@ -1994,7 +1994,7 @@ class register_invited(S3CustomController):
             self.send_welcome_email(account)
 
             # Log them in
-            user = Storage(utable._filter_fields(account, id=True))
+            user = Storage(utable._filter_fields(account, allow_id=True))
             auth.login_user(user)
 
             auth_messages = auth.messages
